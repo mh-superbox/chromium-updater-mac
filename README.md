@@ -1,4 +1,4 @@
-# Chromium updater mac
+# Chromium updater for macOS
 
 This is a LaunchDaemon to automatically update [Ungoogled Chromium](https://github.com/ungoogled-software/ungoogled-chromium-macos).
 
