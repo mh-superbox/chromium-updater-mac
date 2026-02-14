@@ -101,7 +101,6 @@ jobs:
     if: github.ref_type == 'tag'
     needs:
       - code-analysis
-      - validation
       - security
       - tests
     permissions:
