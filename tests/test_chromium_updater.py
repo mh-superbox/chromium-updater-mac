@@ -64,9 +64,7 @@ def test_main_full_integration(tmp_path: Path, app_factory: Callable[[str], Path
     run_mock: MagicMock = MagicMock(return_value=SimpleNamespace(returncode=0))
 
     path_mock: MagicMock = MagicMock(
-        side_effect=lambda p: (
-            applications_dir / "Chromium.app" if str(p) == "/Applications/Chromium.app" else Path(p)
-        ),
+        side_effect=lambda p: (applications_dir if str(p) == "/Applications" else Path(p)),
     )
 
     (applications_dir / "Chromium.app").mkdir(parents=True, exist_ok=True)
@@ -110,8 +108,13 @@ def test_main_full_integration(tmp_path: Path, app_factory: Callable[[str], Path
             "-mountpoint",
             f"{tmp_path.as_posix()}/mnt",
         ],
-        ["/bin/rm", "-rf", "/Applications/Chromium.app"],
-        ["/bin/cp", "-R", f"{tmp_path.as_posix()}/mnt/Chromium.app", "/Applications/Chromium.app"],
+        ["/bin/rm", "-rf", f"{tmp_path.as_posix()}/Applications/Chromium.app"],
+        [
+            "/bin/cp",
+            "-R",
+            f"{tmp_path.as_posix()}/mnt/Chromium.app",
+            f"{tmp_path.as_posix()}/Applications/Chromium.app",
+        ],
         [
             "/usr/bin/hdiutil",
             "detach",
@@ -133,10 +136,10 @@ def test_main_already_up_to_date(tmp_path: Path, app_factory: Callable[[str], Pa
     run_mock: MagicMock = MagicMock(return_value=SimpleNamespace(returncode=0))
 
     path_mock: MagicMock = MagicMock(
-        side_effect=lambda p: (
-            applications_dir / "Chromium.app" if str(p) == "/Applications/Chromium.app" else Path(p)
-        ),
+        side_effect=lambda p: (applications_dir if str(p) == "/Applications" else Path(p)),
     )
+
+    (applications_dir / "Chromium.app").mkdir(parents=True, exist_ok=True)
 
     with (
         mock.patch(

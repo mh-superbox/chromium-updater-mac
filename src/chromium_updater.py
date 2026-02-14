@@ -106,7 +106,7 @@ def install_dmg(dmg: Path) -> None:
     app_dir: Path = Path("/Applications")
     source_app: Path = mount_point / "Chromium.app"
     target_app: Path = app_dir / "Chromium.app"
-
+    logger.info(target_app.as_posix())
     try:
         if target_app.exists():
             logger.info("Removing old Chromium.app")
@@ -127,8 +127,8 @@ def main() -> None:
 
     dmg_url, latest_version = get_latest_arm_release()
 
-    app_path: Path = Path("/Applications/Chromium.app")
-    installed_version: str | None = get_installed_version(app_path)
+    app_path: Path = Path("/Applications")
+    installed_version: str | None = get_installed_version(app_path / "Chromium.app")
 
     logger.info("Installed version: %s", installed_version)
     logger.info("Latest version: %s", latest_version)
