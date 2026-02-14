@@ -6,11 +6,14 @@ requires-python = ">= 3.9"
 [dependency-groups]
 dev = [
     "black>=25.11.0",
+    "coverage>=7.10.7",
     "mypy>=1.19.1",
     "pre-commit>=4.3.0",
     "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
     "ruff>=0.15.1",
     "rumdl>=0.1.19",
+    "setuptools<=80.10.2",
     "yamllint>=1.37.1",
 ]
 
@@ -29,6 +32,7 @@ line-length = 120
 select = ["ALL"]
 ignore = [
     "D",
+    "S101",
     "S603",
     "T201"
 ]
@@ -36,7 +40,6 @@ ignore = [
 [tool.rumdl]
 line-length = 120
 disable = [
-    "MD052",   # Fix broken reference links and images
 ]
 respect-gitignore = true
 
@@ -63,5 +66,5 @@ show_missing = true
 skip_covered = true
 exclude_also = [
     "if TYPE_CHECKING:",
-    "@(abc\\.)?abstractmethod",
+    "if __name__ == .__main__.:",
 ]
