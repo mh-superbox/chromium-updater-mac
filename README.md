@@ -5,7 +5,7 @@ This is a LaunchDaemon to automatically update [Ungoogled Chromium](https://gith
 ## Install updater
 
 ```bash
-sudo cp -f src/chromium-updater.py /usr/local/bin/
+sudo cp -f src/chromium_updater.py /usr/local/bin/chromium-updater.py
 sudo cp -f src/one.superbox.chromium.updater.plist /Library/LaunchDaemons/one.superbox.chromium.updater.plist
 ```
 
