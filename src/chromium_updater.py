@@ -45,15 +45,17 @@ def get_latest_arm_release() -> tuple[str | None, str | None]:
 
 
 def get_installed_version(app_path: Path) -> str | None:
+    installed_version: str | None = None
+
     info_plist: Path = app_path / "Contents" / "Info.plist"
 
-    if not info_plist.exists():
-        return None
+    if info_plist.exists():
+        with info_plist.open("rb") as f:
+            plist: dict[str, Any] = plistlib.load(f)
 
-    with info_plist.open("rb") as f:
-        plist: dict[str, Any] = plistlib.load(f)
+        installed_version = plist.get("CFBundleShortVersionString") or plist.get("CFBundleVersion")
 
-    return plist.get("CFBundleShortVersionString") or plist.get("CFBundleVersion")
+    return installed_version
 
 
 def version_tuple(v: str) -> tuple[int, ...]:
@@ -131,19 +133,16 @@ def main() -> None:
     logger.info("Installed version: %s", installed_version)
     logger.info("Latest version: %s", latest_version)
 
-    if not dmg_url or not latest_version:
-        logger.warning("Could not determine latest release")
-        sys.exit(0)
+    if dmg_url and latest_version:
+        if installed_version and version_tuple(latest_version) <= version_tuple(installed_version):
+            logger.info("Already up to date 👍")
+        else:
+            logger.info("New version available")
+            dmg_file: Path = Path(tempfile.gettempdir()) / dmg_url.split("/")[-1]
+            download_dmg(dmg_url, dmg_file)
+            install_dmg(dmg_file)
 
-    if installed_version and version_tuple(latest_version) <= version_tuple(installed_version):
-        logger.info("Already up to date 👍")
-        sys.exit(0)
-
-    logger.info("New version available")
-
-    dmg_file: Path = Path(tempfile.gettempdir()) / dmg_url.split("/")[-1]
-    download_dmg(dmg_url, dmg_file)
-    install_dmg(dmg_file)
+    sys.exit(0)
 
 
 if __name__ == "__main__":

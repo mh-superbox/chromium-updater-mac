@@ -32,9 +32,10 @@ line-length = 120
 select = ["ALL"]
 ignore = [
     "D",
+    "I001",
     "S101",
     "S603",
-    "T201"
+    "T201",
 ]
 
 [tool.rumdl]
