@@ -69,6 +69,8 @@ def test_main_full_integration(tmp_path: Path, app_factory: Callable[[str], Path
         ),
     )
 
+    (applications_dir / "Chromium.app").mkdir(parents=True, exist_ok=True)
+
     with (
         mock.patch(
             "src.chromium_updater.urllib.request.urlopen",

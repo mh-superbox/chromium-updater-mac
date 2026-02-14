@@ -126,7 +126,8 @@ jobs:
       - name: Create ZIP file
         run: |
           cd ${{ github.workspace }}/
-          zip -r ${{ github.workspace }}/chromium-updater.zip ./src README.md
+          zip -r ${{ github.workspace }}/chromium-updater.zip \
+            ./src/chromium_updater.py ./src/one.superbox.chromium.updater.plist README.md
       - name: Release on GitHub
         uses: softprops/action-gh-release@v2
         with:
