@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/chromium-updater-mac.iml" filepath="$PROJECT_DIR$/.idea/chromium-updater-mac.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Chromium-Updater-macOS.iml" filepath="$PROJECT_DIR$/.idea/Chromium-Updater-macOS.iml" />
     </modules>
   </component>
 </project>
