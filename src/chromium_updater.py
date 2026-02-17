@@ -11,11 +11,7 @@ import tempfile
 import urllib.request
 from pathlib import Path
 from typing import Any
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from http.client import HTTPResponse
-
+from urllib.error import URLError
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -26,20 +22,23 @@ logging.basicConfig(
 
 def get_latest_arm_release() -> tuple[str | None, str | None]:
     dmg_url: str | None = None
+    version: str | None = None
 
-    response: HTTPResponse
-    with urllib.request.urlopen(
-        "https://api.github.com/repos/ungoogled-software/ungoogled-chromium-macos/releases/latest",
-        timeout=15,
-    ) as response:
-        data: dict[str, Any] = json.load(response)
+    try:
+        with urllib.request.urlopen(
+            "https://api.github.com/repos/ungoogled-software/ungoogled-chromium-macos/releases/latest",
+            timeout=15,
+        ) as response:
+            data: dict[str, Any] = json.load(response)
+    except URLError as error:
+        logger.error(error)
+    else:
+        version = data.get("tag_name")
 
-    version: str | None = data.get("tag_name")
-
-    for asset in data["assets"]:
-        name: str = asset["name"]
-        if "arm64" in name and name.endswith(".dmg"):
-            dmg_url = asset["browser_download_url"]
+        for asset in data["assets"]:
+            name: str = asset["name"]
+            if "arm64" in name and name.endswith(".dmg"):
+                dmg_url = asset["browser_download_url"]
 
     return dmg_url, version
 
@@ -64,33 +63,34 @@ def version_tuple(v: str) -> tuple[int, ...]:
 
 
 def download_dmg(url: str, target: Path) -> None:
-    response: HTTPResponse
+    try:
+        with urllib.request.urlopen(url) as response, target.open("wb") as f:  # noqa: S310
+            total_size: int = int(response.headers.get("Content-Length", 0))
+            downloaded: int = 0
+            chunk_size: int = 8192
+            last_logged: int = 0
 
-    with urllib.request.urlopen(url) as response, target.open("wb") as f:  # noqa: S310
-        total_size: int = int(response.headers.get("Content-Length", 0))
-        downloaded: int = 0
-        chunk_size: int = 8192
-        last_logged: int = 0
+            logger.info("Downloading %s", target.name)
 
-        logger.info("Downloading %s", target.name)
+            while True:
+                chunk: bytes = response.read(chunk_size)
+                if not chunk:
+                    break
 
-        while True:
-            chunk: bytes = response.read(chunk_size)
-            if not chunk:
-                break
+                f.write(chunk)
 
-            f.write(chunk)
+                downloaded += len(chunk)
 
-            downloaded += len(chunk)
+                if total_size > 0:
+                    percent: int = int(downloaded * 100 / total_size)
 
-            if total_size > 0:
-                percent: int = int(downloaded * 100 / total_size)
+                    if percent >= last_logged + 5:
+                        logger.info("Download progress: %d%% (%d/%d bytes)", percent, downloaded, total_size)
+                        last_logged = percent
 
-                if percent >= last_logged + 5:
-                    logger.info("Download progress: %d%% (%d/%d bytes)", percent, downloaded, total_size)
-                    last_logged = percent
-
-        logger.info("Downloaded to %s", target.as_posix())
+            logger.info("Downloaded to %s", target.as_posix())
+    except URLError as error:
+        logger.error(error)
 
 
 def install_dmg(dmg: Path) -> None:

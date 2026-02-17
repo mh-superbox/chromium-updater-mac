@@ -38,6 +38,7 @@ ignore = [
     "S101",
     "S603",
     "T201",
+    "TRY400",
 ]
 
 [tool.rumdl]
