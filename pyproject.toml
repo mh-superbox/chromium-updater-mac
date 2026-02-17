@@ -15,7 +15,7 @@ dev = [
     "pytest-cov>=7.0.0",
     "ruff>=0.15.1",
     "rumdl>=0.1.19",
-    "setuptools<=82.0.0",
+    "setuptools<=80.10.2",
     "yamllint>=1.37.1",
 ]
 
