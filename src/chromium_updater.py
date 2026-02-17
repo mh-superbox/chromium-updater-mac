@@ -30,7 +30,7 @@ def get_latest_arm_release() -> tuple[str | None, str | None]:
             timeout=15,
         ) as response:
             data: dict[str, Any] = json.load(response)
-    except URLError as error:
+    except URLError as error:  # pragma: no cover
         logger.error(error)
     else:
         version = data.get("tag_name")
@@ -89,7 +89,7 @@ def download_dmg(url: str, target: Path) -> None:
                         last_logged = percent
 
             logger.info("Downloaded to %s", target.as_posix())
-    except URLError as error:
+    except URLError as error:  # pragma: no cover
         logger.error(error)
 
 
