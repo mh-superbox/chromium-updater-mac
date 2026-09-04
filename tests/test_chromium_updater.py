@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
-from typing import Callable
 from typing import Literal
+from typing import TYPE_CHECKING
 from unittest import mock
 from unittest.mock import MagicMock
 
@@ -14,6 +14,9 @@ import pytest
 from typing_extensions import Self
 
 from src import chromium_updater
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class FakeHTTPResponse:
