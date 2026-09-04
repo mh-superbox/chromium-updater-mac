@@ -12,6 +12,7 @@ dev = [
     "pip-audit>=2.9.0",
     "pre-commit>=4.3.0",
     "pytest>=8.4.2",
+    "pytest-cov>=7.1.0",
     "rumdl>=0.1.19",
     "ruff>=0.15.16",
     "rumdl>=0.2.8",
