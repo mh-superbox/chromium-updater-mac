@@ -129,7 +129,7 @@ jobs:
           zip -r ${{ github.workspace }}/chromium-updater.zip \
             ./src/chromium_updater.py ./src/one.superbox.chromium.updater.plist README.md
       - name: Release on GitHub
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           prerelease: ${{ steps.check_prerelease.outputs.prerelease }}
           files: ${{ github.workspace }}/chromium-updater.zip
