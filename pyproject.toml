@@ -12,10 +12,10 @@ dev = [
     "pip-audit>=2.9.0",
     "pre-commit>=4.3.0",
     "pytest>=8.4.2",
-    "pytest-cov>=7.0.0",
-    "ruff>=0.15.1",
+    "rumdl>=0.1.19",
+    "ruff>=0.15.16",
     "rumdl>=0.2.8",
-    "setuptools<=82.0.0",
+    "setuptools<=82.0.1",
     "yamllint>=1.37.1",
 ]
 
