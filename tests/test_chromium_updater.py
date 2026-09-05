@@ -67,7 +67,7 @@ def test_main_full_integration(tmp_path: Path, app_factory: Callable[[str], Path
     run_mock: MagicMock = MagicMock(return_value=SimpleNamespace(returncode=0))
 
     path_mock: MagicMock = MagicMock(
-        side_effect=lambda p: (applications_dir if str(p) == "/Applications" else Path(p)),
+        side_effect=lambda p: applications_dir if str(p) == "/Applications" else Path(p),
     )
 
     (applications_dir / "Chromium.app").mkdir(parents=True, exist_ok=True)
@@ -139,7 +139,7 @@ def test_main_already_up_to_date(tmp_path: Path, app_factory: Callable[[str], Pa
     run_mock: MagicMock = MagicMock(return_value=SimpleNamespace(returncode=0))
 
     path_mock: MagicMock = MagicMock(
-        side_effect=lambda p: (applications_dir if str(p) == "/Applications" else Path(p)),
+        side_effect=lambda p: applications_dir if str(p) == "/Applications" else Path(p),
     )
 
     (applications_dir / "Chromium.app").mkdir(parents=True, exist_ok=True)
