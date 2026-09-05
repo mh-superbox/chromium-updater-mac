@@ -190,6 +190,7 @@ dev = [
     { name = "rumdl" },
     { name = "setuptools" },
     { name = "ty" },
+    { name = "typing-extensions" },
     { name = "yamllint" },
 ]
 
@@ -207,6 +208,7 @@ dev = [
     { name = "rumdl", specifier = ">=0.2.8" },
     { name = "setuptools", specifier = "<=82.0.1" },
     { name = "ty", specifier = ">=0.0.70" },
+    { name = "typing-extensions", specifier = ">=4.16.0" },
     { name = "yamllint", specifier = ">=1.37.1" },
 ]
 
