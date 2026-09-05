@@ -11,10 +11,9 @@
 
 # checks
 .ruff_cache
-.mypy_cache
 .pytest_cache
 .rumdl_cache
 
-# reports
-reports/
-.coverage
+# coverage
+coverage.xml
+.coverage*

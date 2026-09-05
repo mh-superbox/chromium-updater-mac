@@ -1,0 +1,17 @@
+line-length = 120
+
+[lint]
+select = ["ALL"]
+ignore = [
+    "COM812",
+    "CPY001",
+    "D",
+    "I001",
+    "S101",
+    "S603",
+    "T201",
+    "TRY400",
+]
+
+[lint.isort]
+force-single-line = true
